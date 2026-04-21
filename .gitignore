@@ -1,0 +1,28 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files
+appsettings.json
+launchSettings.json
+
+# Node (?? ?????)
+node_modules/
+
+# Rider / VSCode
+.idea/
+.vscode/

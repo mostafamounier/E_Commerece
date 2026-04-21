@@ -1,0 +1,52 @@
+﻿// ApplicationServicesExtensions.cs
+using AutoMapper;
+using E_Commerce.Errors;
+using E_Commerce.Helpers;
+using E_Commerece.Core.Repositories;
+using E_Commerece.Repository.Data;
+using E_Commerece.Repository.Repositoriees;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace E_Commerce.Extensions
+{
+    public static class ApplicationServicesExtensions
+    {
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            // AutoMapper
+            services.AddAutoMapper(typeof(MappingProfiles));
+
+            // API Behavior Options - Validation Error Handling
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(e => e.Value.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    var validationErrorResponse = new ValidationErrorResponse()
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(validationErrorResponse);
+                };
+            });
+
+            // Database Context
+            services.AddDbContext<StoreContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            // Repositories
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            return services;
+        }
+    }
+}
