@@ -42,6 +42,11 @@ namespace E_Commerece.Repository.Repositoriees
             return ApplySpecification(spec).FirstOrDefaultAsync();
         }
 
+        public Task<int> GetCountWithSpecFilteration(ISpecification<T> spec)
+        {
+            return ApplySpecification(spec).CountAsync();
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvalutor<T>.GetQuery(context.Set<T>().AsQueryable(), spec);

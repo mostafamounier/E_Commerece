@@ -14,11 +14,20 @@ namespace E_Commerece.Core.Specifications
         public List<Expression<Func<T, object>>> Includes { get; set ; } = new List<Expression<Func<T, object>>>();
         public Expression<Func<T, object>> OrderBy { get; set; }
         public Expression<Func<T, object>> OrderByDesnc { get ; set ; }
+        public int Skip { get ; set; }
+        public int Take { get ; set ; }
+        public bool Pagniation_Enabled { get; set ; }
 
         public BaseSpecification(Expression<Func<T, bool>> Criteria)
             {
                 this.Criteria = Criteria;
             }
         public BaseSpecification() { }
+        public void ApplyPagniation(int skip, int take)
+        {
+            this.Pagniation_Enabled=true;
+            this.Skip = skip;
+            this.Take = take;
+        }
     }
 }

@@ -26,6 +26,8 @@ namespace E_Commerece.Repository
 
                 query = query.OrderByDescending(spec.OrderByDesnc);
             }
+            if (spec.Pagniation_Enabled)
+                query = query.Skip(spec.Skip).Take(spec.Take);
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
             return query;
         }

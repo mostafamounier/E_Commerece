@@ -32,12 +32,15 @@ namespace E_Commerce.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(string ? sort,int? BrandId,int? TypeId)
+        public async Task<ActionResult<PagniationResponse<ProductDto>>> GetProducts([FromQuery]ProductSpecParams productSpecParams)
         {
-            ProductSpecification productSpecification = new ProductSpecification(sort,BrandId,TypeId);
+            ProductSpecification productSpecification = new ProductSpecification(productSpecParams);
             var products =await genericRepo.GetAllWithSpecAsync(productSpecification);
+            var productspeccount = new ProductCountSpec(productSpecParams);
+            var count= await genericRepo.GetCountWithSpecFilteration(productspeccount);
             var productsdto = mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
-            return Ok(productsdto);
+            var productspagniation = new PagniationResponse<ProductDto>(productSpecParams.PageIndex, productSpecParams.PageSize,count, productsdto.ToList());
+            return Ok(productspagniation);
         }
 
         [HttpGet("{id}")]

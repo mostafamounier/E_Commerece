@@ -14,6 +14,8 @@ namespace E_Commerece.Core.Repositories
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecification<T> spec);
         Task<T> GetByIdWithSpecAsync(ISpecification<T> spec);
+        Task<int> GetCountWithSpecFilteration(ISpecification<T> spec);
+
 
     }
 }

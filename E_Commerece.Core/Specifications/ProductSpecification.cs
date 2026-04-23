@@ -9,16 +9,17 @@ namespace E_Commerece.Core.Specifications
 {
     public class ProductSpecification : BaseSpecification<Product>
     {
-        public ProductSpecification(string? Sort ,int? brandid,int? typeid ) : base(p =>
+        public ProductSpecification(ProductSpecParams productSpecParams ) : base(p =>
+        (string.IsNullOrEmpty(productSpecParams.SearchByName)) ||(p.Name.Contains(productSpecParams.SearchByName))&&
 
-        (!brandid.HasValue||p.ProductBrandId==brandid)&&(!typeid.HasValue||p.ProductTypeId==typeid)        )
+        (!productSpecParams.BrandId.HasValue||p.ProductBrandId== productSpecParams.BrandId) &&(!productSpecParams.TypeId.HasValue||p.ProductTypeId== productSpecParams.TypeId))
         {
             Includes.Add(p => p.ProductBrand);
             Includes.Add(p => p.ProductType);
 
-            if (!string.IsNullOrEmpty(Sort))
+            if (!string.IsNullOrEmpty(productSpecParams.Sort))
             {
-                switch (Sort)
+                switch (productSpecParams.Sort)
                 {
                     case "PriceAsnc":
                         this.OrderBy = p => p.Price;
@@ -36,14 +37,17 @@ namespace E_Commerece.Core.Specifications
 
 
                 }
+                
+            }
+            ApplyPagniation(productSpecParams.PageSize*(productSpecParams.PageIndex-1),productSpecParams.PageSize);
+            }
 
-            }
-            }
         public ProductSpecification(int id) : base(p => p.Id == id)
         { 
             Includes.Add(p => p.ProductBrand);
             Includes.Add(p => p.ProductType);
         }
 
+        
     }
 }
