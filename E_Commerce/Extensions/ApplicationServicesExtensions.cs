@@ -3,10 +3,13 @@ using AutoMapper;
 using E_Commerce.Errors;
 using E_Commerce.Helpers;
 using E_Commerece.Core.Repositories;
+using E_Commerece.Repository;
 using E_Commerece.Repository.Data;
 using E_Commerece.Repository.Repositoriees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 
 namespace E_Commerce.Extensions
 {
@@ -42,7 +45,18 @@ namespace E_Commerce.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("UserIdentityConnection"));
+            });
+            
+            services.AddSingleton<IConnectionMultiplexer>(Options => { 
+                    
+                var Connection = configuration.GetConnectionString("Redis");
 
+                return ConnectionMultiplexer.Connect(Connection);
+            });
+            services.AddScoped(typeof(IBasketRepository),typeof(BasketRepository));
             // Repositories
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

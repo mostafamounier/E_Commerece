@@ -1,7 +1,10 @@
 ﻿// Program.cs
 using E_Commerce.Extensions;
 using E_Commerce.Middlewares;
+using E_Commerece.Core.Models.Identity;
+using E_Commerece.Repository;
 using E_Commerece.Repository.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce
@@ -16,6 +19,7 @@ namespace E_Commerce
             builder.Services.AddControllers();
             builder.Services.AddSwaggerServices();           // ✅ Swagger services
             builder.Services.AddApplicationServices(builder.Configuration);
+            builder.Services.AddIdentityServices(builder.Configuration);
             #endregion
 
             var app = builder.Build();
@@ -24,10 +28,14 @@ namespace E_Commerce
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            var usermanager = services.GetRequiredService<UserManager<AppUser>>();
+            StoreContextSeed.SeedUsersAsync(usermanager);
             try
             {
                 var context = services.GetRequiredService<StoreContext>();
                 await context.Database.MigrateAsync();
+                var identity =services.GetRequiredService<AppIdentityDbContext>();
+                await identity.Database.MigrateAsync();
             }
             catch (Exception ex)
             {
@@ -42,6 +50,7 @@ namespace E_Commerce
             app.UseStatusCodePagesWithRedirects("/errors/{0}");
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             #endregion

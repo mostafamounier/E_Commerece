@@ -1,4 +1,6 @@
-﻿using System;
+﻿using E_Commerece.Core.Models.Identity;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,36 @@ namespace E_Commerece.Repository.Data
 {
     public class StoreContextSeed
     {
+
+
+
+        public static async Task SeedUsersAsync(UserManager<AppUser> userManager)
+        {
+            if (!userManager.Users.Any())
+            {
+                var admin = new AppUser()
+                {
+                    DisplayName = "Admin",
+                    Email = "admin@test.com",
+                    UserName = "admin@test.com",
+                    PhoneNumber = "01000000000"
+                };
+
+                await userManager.CreateAsync(admin, "Admin@123");
+
+                var user = new AppUser()
+                {
+                    DisplayName = "Mostafa Mounir",
+                    Email = "Mostafa@gmail.com",
+                    UserName = "Mostafa",
+                    PhoneNumber = "01027045389"
+                };
+
+                await userManager.CreateAsync(user, "P@ssw0rd");
+            }
+        }
+
+
         public static async Task SeedAsync(StoreContext context)
         {
             if (!context.ProductBrands.Any())
