@@ -20,6 +20,21 @@ namespace E_Commerece.Repository.Repositoriees
             context = _Context;
         }
 
+        public async Task AddAsync(T entity)
+        {
+            context.Set<T>().Add(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            context.Set<T>().Remove(entity);
+        }
+
+        public void Update(T entity)
+        {
+            context.Set<T>().Update(entity);
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             if (typeof(T) == typeof(Product))
@@ -46,6 +61,8 @@ namespace E_Commerece.Repository.Repositoriees
         {
             return ApplySpecification(spec).CountAsync();
         }
+
+
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {

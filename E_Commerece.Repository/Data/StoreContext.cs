@@ -1,4 +1,5 @@
 ﻿using E_Commerece.Core.Models;
+using E_Commerece.Core.Models.Order_Aggreation;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,16 @@ namespace E_Commerece.Repository.Data
         {
             
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+
+
+
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }

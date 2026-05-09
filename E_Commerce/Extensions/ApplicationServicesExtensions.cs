@@ -2,6 +2,7 @@
 using AutoMapper;
 using E_Commerce.Errors;
 using E_Commerce.Helpers;
+using E_Commerece.Core;
 using E_Commerece.Core.Repositories;
 using E_Commerece.Repository;
 using E_Commerece.Repository.Data;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace E_Commerce.Extensions
 {
@@ -59,6 +62,15 @@ namespace E_Commerce.Extensions
             services.AddScoped(typeof(IBasketRepository),typeof(BasketRepository));
             // Repositories
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IOrderService), typeof(OrderService));
+            services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
+
 
             return services;
         }

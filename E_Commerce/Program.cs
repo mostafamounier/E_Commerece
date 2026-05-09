@@ -29,10 +29,11 @@ namespace E_Commerce
             var services = scope.ServiceProvider;
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             var usermanager = services.GetRequiredService<UserManager<AppUser>>();
-            StoreContextSeed.SeedUsersAsync(usermanager);
+
             try
             {
                 var context = services.GetRequiredService<StoreContext>();
+                StoreContextSeed.SeedAsync(context);
                 await context.Database.MigrateAsync();
                 var identity =services.GetRequiredService<AppIdentityDbContext>();
                 await identity.Database.MigrateAsync();

@@ -5,6 +5,7 @@ using E_Commerece.Core.Models;
 using E_Commerece.Core.Repositories;
 using E_Commerece.Core.Specifications;
 using E_Commerece.Repository.Repositoriees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +33,7 @@ namespace E_Commerce.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<PagniationResponse<ProductDto>>> GetProducts([FromQuery]ProductSpecParams productSpecParams)
         {
             ProductSpecification productSpecification = new ProductSpecification(productSpecParams);

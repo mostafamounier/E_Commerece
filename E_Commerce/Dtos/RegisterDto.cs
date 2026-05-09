@@ -1,4 +1,4 @@
-﻿namespace E_Commerce.Controllers
+﻿namespace E_Commerce.Dtos
 {
     public class RegisterDto
     {

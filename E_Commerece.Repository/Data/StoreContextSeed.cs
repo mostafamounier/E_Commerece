@@ -1,4 +1,5 @@
 ﻿using E_Commerece.Core.Models.Identity;
+using E_Commerece.Core.Models.Order_Aggreation;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,18 @@ namespace E_Commerece.Repository.Data
 
         public static async Task SeedAsync(StoreContext context)
         {
+            if (!context.DeliveryMethods.Any())
+            {
+                var brandsdata = File.ReadAllText("../E_Commerece.Repository/Data/DataSeed/delivery.json");
+                var brands = JsonSerializer.Deserialize<List<DeliveryMethod>>(brandsdata);
+
+                foreach (var item in brands)
+                {
+                    await context.DeliveryMethods.AddAsync(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
             if (!context.ProductBrands.Any())
             {
                 var brandsdata = File.ReadAllText("../E_Commerece.Repository/Data/DataSeed/brands.json");
@@ -53,7 +66,7 @@ namespace E_Commerece.Repository.Data
                     await context.ProductBrands.AddAsync(item);
                 }
 
-                await context.SaveChangesAsync(); // ✅ مهم
+                await context.SaveChangesAsync(); 
             }
             if (!context.ProductTypes.Any())
             {
@@ -65,7 +78,7 @@ namespace E_Commerece.Repository.Data
                     await context.ProductTypes.AddAsync(item);
                 }
 
-                await context.SaveChangesAsync(); // ✅ مهم
+                await context.SaveChangesAsync(); 
             }
 
             if (!context.Products.Any())
@@ -78,7 +91,7 @@ namespace E_Commerece.Repository.Data
                     await context.Products.AddAsync(item);
                 }
 
-                await context.SaveChangesAsync(); // ✅ مهم
+                await context.SaveChangesAsync(); 
             }
 
 
