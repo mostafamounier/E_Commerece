@@ -9,25 +9,26 @@ namespace E_Commerece.Core.Models.Order_Aggreation
 {
     public class Order :EntityBase
     {
-        public string BuryerEmail { get; set; }
-        public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
+        public string BuyerEmail { get; set; }
+        public DateTimeOffset orderDate { get; set; } = DateTimeOffset.Now;
         public DeliveryMethod deliveryMethod { get; set; }
-        public OrderStatus Status { get; set; } =OrderStatus.Pending;
-        public Address ShippingAddress { get; set; }
+        public OrderStatus status { get; set; } =OrderStatus.Pending;
+        public Address shippToAddress { get; set; }
         public ICollection<OrderItem> Items { get; set; }=new HashSet<OrderItem>();
         public decimal SubTotal { get; set; }
         public decimal GetTotal() => SubTotal + deliveryMethod.Cost;
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string paymentIntentId { get; set; } 
         public Order()
         {
             
         }
 
-        public Order(string buryerEmail, DeliveryMethod deliveryMethod, Address shippingAddress, ICollection<OrderItem> items, decimal subTotal)
+        public Order(string buryerEmail, DeliveryMethod deliveryMethod, Address shippingAddress, ICollection<OrderItem> items, decimal subTotal,string paymentintentid)
         {
-            BuryerEmail = buryerEmail;
+            paymentintentid= paymentintentid ?? string.Empty;
+            BuyerEmail = buryerEmail;
             this.deliveryMethod = deliveryMethod;
-            ShippingAddress = shippingAddress;
+            shippToAddress = shippingAddress;
             Items = items;
             SubTotal = subTotal;
         }

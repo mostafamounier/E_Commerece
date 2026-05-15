@@ -2,6 +2,7 @@
 using E_Commerece.Core.Models;
 using E_Commerece.Core.Models.Order_Aggreation;
 using E_Commerece.Core.Repositories;
+using E_Commerece.Core.Services;
 using E_Commerece.Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
@@ -52,7 +53,7 @@ namespace E_Commerece.Repository.Repositoriees
 
                     var subTotal =items.Sum(i=>i.qunatity*i.Price);
                     var deliveryMethod=await unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
-                    var Order =new Order(buyerEmail,deliveryMethod,shippingAddress,productitems,subTotal);
+                    var Order =new Order(buyerEmail,deliveryMethod,shippingAddress,productitems,subTotal,basket.PaymentIntentId);
                     await unitOfWork.Repository<Order>().AddAsync(Order);
                     await  unitOfWork.Compelete();
                     return Order;

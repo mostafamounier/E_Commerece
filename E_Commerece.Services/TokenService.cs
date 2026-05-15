@@ -1,5 +1,5 @@
 ﻿using E_Commerece.Core.Models.Identity;
-using E_Commerece.Core.Repositories;
+using E_Commerece.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;

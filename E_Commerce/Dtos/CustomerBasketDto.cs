@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using E_Commerece.Core.Models;
 
-namespace E_Commerece.Core.Models
+namespace E_Commerce.Dtos
 {
-    public class CustomerBasket 
+    public class CustomerBasketDto
     {
         public string Id { get; set; }
         public string? PaymentIntentId { get; set; }
@@ -14,8 +10,9 @@ namespace E_Commerece.Core.Models
         public int? DeliveryMethodId { get; set; }
         public decimal ShippingCost { get; set; }
         public List<BasketItem> Items { get; set; }
-        public CustomerBasket(string Id) { 
-        
+        public CustomerBasketDto(string Id)
+        {
+
             this.Id = Id;
         }
     }

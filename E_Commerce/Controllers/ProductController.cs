@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace E_Commerce.Controllers
 {
 
-    public class ProductController : ApiControllerBase
+    public class productsController : ApiControllerBase
     {
         private readonly IGenericRepository<Product> genericRepo;
         private readonly IMapper mapper;
         private readonly IGenericRepository<ProductType> productType_Repo;
         private readonly IGenericRepository<ProductBrand> productBrand_Repo;
 
-        public ProductController(IGenericRepository<Product> ProductRepo,IMapper mapper,
+        public productsController(IGenericRepository<Product> ProductRepo,IMapper mapper,
             IGenericRepository<ProductType>ProductType_Repo,IGenericRepository<ProductBrand> ProductBrand_Repo)
         {
             this.genericRepo = ProductRepo;
@@ -33,8 +33,8 @@ namespace E_Commerce.Controllers
 
 
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<PagniationResponse<ProductDto>>> GetProducts([FromQuery]ProductSpecParams productSpecParams)
+
+        public async Task<ActionResult<PagniationResponse<ProductDto>>> products([FromQuery]ProductSpecParams productSpecParams)
         {
             ProductSpecification productSpecification = new ProductSpecification(productSpecParams);
             var products =await genericRepo.GetAllWithSpecAsync(productSpecification);
@@ -49,7 +49,7 @@ namespace E_Commerce.Controllers
         [ProducesResponseType(typeof(ProductDto),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
 
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<Product>> product(int id)
         {
             ProductSpecification productSpecification = new ProductSpecification(id);
             var product = await genericRepo.GetByIdWithSpecAsync(productSpecification);
@@ -59,18 +59,18 @@ namespace E_Commerce.Controllers
             return Ok(productdto);
         }
 
-        [HttpGet("ProductTypes")]
-        public async Task<ActionResult<IEnumerable<ProductType>>> GetAllProductTypes()
+        [HttpGet("types")]
+        public async Task<ActionResult<IEnumerable<ProductType>>> types()
         {
-            var productTypes =await productBrand_Repo.GetAllAsync();
+            var productTypes =await productType_Repo.GetAllAsync();
 
             return Ok(productTypes);
         }
 
-        [HttpGet("ProductBrands")]
-        public async Task<ActionResult<IEnumerable<ProductBrand>>> GetAllProductBrands()
+        [HttpGet("brands")]
+        public async Task<ActionResult<IEnumerable<ProductBrand>>> brands()
         {
-            var productBrands = await productType_Repo.GetAllAsync();
+            var productBrands = await productBrand_Repo.GetAllAsync();
 
             return Ok(productBrands);
         }

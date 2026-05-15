@@ -13,8 +13,8 @@ namespace E_Commerece.Repository.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.OwnsOne(o => o.ShippingAddress,SA=>SA.WithOwner());
-            builder.Property(o => o.Status)
+            builder.OwnsOne(o => o.shippToAddress,SA=>SA.WithOwner());
+            builder.Property(o => o.status)
                 .HasConversion(
                     os => os.ToString(),
                     os => (OrderStatus)Enum.Parse(typeof(OrderStatus), os)

@@ -3,7 +3,7 @@ using E_Commerce.Dtos;
 using E_Commerce.Errors;
 using E_Commerce.Extensions;
 using E_Commerece.Core.Models.Identity;
-using E_Commerece.Core.Repositories;
+using E_Commerece.Core.Services;
 using E_Commerece.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

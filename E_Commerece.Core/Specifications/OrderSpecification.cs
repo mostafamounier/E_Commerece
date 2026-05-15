@@ -14,14 +14,14 @@ namespace E_Commerece.Core.Specifications
 
 
 
-        public OrderSpecification(string Email) : base(o => o.BuryerEmail == Email)
+        public OrderSpecification(string Email) : base(o => o.BuyerEmail == Email)
         {
             Includes.Add(o=>o.deliveryMethod);
             Includes.Add(o => o.Items);
-            this.OrderByDesnc = o => o.OrderDate;
+            this.OrderByDesnc = o => o.orderDate;
         }
 
-        public OrderSpecification(int Id,string Email) :base(o => o.BuryerEmail == Email&& o.Id == Id)
+        public OrderSpecification(int Id,string Email) :base(o => o.BuyerEmail == Email&& o.Id == Id)
         {
 
             Includes.Add(o => o.deliveryMethod);

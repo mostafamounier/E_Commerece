@@ -6,6 +6,7 @@ using E_Commerece.Repository;
 using E_Commerece.Repository.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace E_Commerce
 {
@@ -17,9 +18,18 @@ namespace E_Commerce
 
             #region Services Configuration
             builder.Services.AddControllers();
-            builder.Services.AddSwaggerServices();           // ✅ Swagger services
+            builder.Services.AddSwaggerServices();           
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddIdentityServices(builder.Configuration);
+            builder.Services.AddCors(options=> {
+                options.AddPolicy("MyPolicy", options =>
+                {
+                    options.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["FrontUrl"]);
+                });
+                
+                
+                });
+
             #endregion
 
             var app = builder.Build();
@@ -46,14 +56,16 @@ namespace E_Commerce
             #endregion
 
             #region Middleware Pipeline
-            app.UseSwaggerMiddleware();                      // ✅ Swagger pipeline
+            app.UseSwaggerMiddleware();                   
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseStatusCodePagesWithRedirects("/errors/{0}");
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
+
             #endregion
 
             app.Run();

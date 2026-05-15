@@ -4,9 +4,11 @@ using E_Commerce.Errors;
 using E_Commerce.Helpers;
 using E_Commerece.Core;
 using E_Commerece.Core.Repositories;
+using E_Commerece.Core.Services;
 using E_Commerece.Repository;
 using E_Commerece.Repository.Data;
 using E_Commerece.Repository.Repositoriees;
+using E_Commerece.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -64,6 +66,7 @@ namespace E_Commerce.Extensions
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IOrderService), typeof(OrderService));
+            services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
             services.AddControllers()
     .AddJsonOptions(options =>
     {
